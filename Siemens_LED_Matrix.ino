@@ -58,11 +58,26 @@ void loop() {
         matrix.clear();
         matrix.show();
         break;
+      case 6:
+        break;
+      case 7:
+        drawGraph();
+        break;
     }
 
     
   }
 
+}
+
+void drawGraph{
+  if(Serial.available() > 0){
+    int stripe_nr = Serial.parseInt();  // get Stripe Number from serial line
+    int height = map(Serial.parseInt(), 0, 100, 0, HIGHT_MATRIX); // Map to height 
+    matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ); // get color from Serial line
+
+    matrix.drawLine(stripe_nr, 0, stripe_nr, height, matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ));
+  }
 }
 
 void displayGraphs(bool amp){
