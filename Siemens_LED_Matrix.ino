@@ -76,7 +76,7 @@ void drawsingleGraph(){
     //expects: MODE, STRIPE_NR, HEIGHT<0:100>
     int stripe_nr = Serial.parseInt();  // get Stripe Number from serial line
     int height = map(Serial.parseInt(), 0, 100, 0, HIGHT_MATRIX); // Map to height 
-    matrix.drawLine(stripe_nr, 0, stripe_nr, height, matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ));
+    matrix.drawLine(stripe_nr, HIGHT_MATRIX, stripe_nr, HIGHT_MATRIX - height, matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ));
   }
 }
 
