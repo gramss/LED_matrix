@@ -1,6 +1,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
+#include "siemensfont.h"
 #ifndef PSTR
  #define PSTR // Make Arduino Due happy
 #endif
@@ -56,13 +57,20 @@ void loop() {
         break;
       case 5:
         matrix.clear();
-        //matrix.show(); //--> USE MODE 6
+        matrix.show();
         break;
       case 6:         //NEEDS to be exicuted after using all the other modes
       matrix.show();
         break;
       case 7:
         drawsingleGraph();
+        break;
+      case 8:
+        matrix.setFont(&ufonts_com_siemens_logo9pt7b);
+        matrix.setCursor(20,10);
+        matrix.print("s");
+        matrix.show();
+        matrix.setFont();
         break;
     }
 
