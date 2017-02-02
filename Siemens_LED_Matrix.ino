@@ -16,7 +16,7 @@
 
 int mode = 0; //0=default, 1=graph, to be extended
 
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_DOWN + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
 
 const uint16_t colors[] = {
   matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
@@ -44,21 +44,22 @@ void loop() {
         matrix.setTextColor(colors[2]);
         matrix.setTextSize(1);
         matrix.print("Siemens");
-        matrix.show();
+        //matrix.show(); //--> USE MODE 6
         break;
       case 3:
         matrix.drawLine(0,0,58,29, colors[0]);
-        matrix.show();
+        //matrix.show(); //--> USE MODE 6
         break;
       case 4:
-        matrix.fillRect(0,0,30,29, colors[0]);
-        matrix.show();
+        matrix.fillRect(Serial.parseInt(), Serial.parseInt(), Serial.parseInt(),Serial.parseInt(), colors[0]);
+        //matrix.show(); //--> USE MODE 6
         break;
       case 5:
         matrix.clear();
-        matrix.show();
+        //matrix.show(); //--> USE MODE 6
         break;
-      case 6:
+      case 6:         //NEEDS to be exicuted after using all the other modes
+      matrix.show();
         break;
       case 7:
         drawGraph();
@@ -70,11 +71,11 @@ void loop() {
 
 }
 
-void drawGraph(){
+void drawsingleGraph(){
   if(Serial.available() > 0){
+    //expects: MODE, STRIPE_NR, HEIGHT<0:100>
     int stripe_nr = Serial.parseInt();  // get Stripe Number from serial line
     int height = map(Serial.parseInt(), 0, 100, 0, HIGHT_MATRIX); // Map to height 
-
     matrix.drawLine(stripe_nr, 0, stripe_nr, height, matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ));
   }
 }
@@ -105,6 +106,6 @@ void displayGraphs(bool amp){
       ;//print error Serial failed to deliver all needed values
     }
   }
-  matrix.show(); //write generated matrix out to the bus-line
+  //matrix.show(); //write generated matrix out to the bus-line ---> NEW MODE 6
 }
 
