@@ -16,7 +16,7 @@
 
 int mode = 0; //0=default, 1=graph, to be extended
 
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_DOWN + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_BOTTOM + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
 
 const uint16_t colors[] = {
   matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
@@ -62,7 +62,7 @@ void loop() {
       matrix.show();
         break;
       case 7:
-        drawGraph();
+        drawsingleGraph();
         break;
     }
 
