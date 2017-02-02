@@ -70,7 +70,7 @@ void loop() {
 
 }
 
-void drawGraph{
+void drawGraph(){
   if(Serial.available() > 0){
     int stripe_nr = Serial.parseInt();  // get Stripe Number from serial line
     int height = map(Serial.parseInt(), 0, 100, 0, HIGHT_MATRIX); // Map to height 
