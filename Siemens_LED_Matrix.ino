@@ -1,4 +1,5 @@
 #include <Adafruit_GFX.h>
+#include <gfxfont.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
 #include "siemensfont.h"
@@ -42,7 +43,8 @@ void loop() {
         displayGraphs(false);  
         break;
       case 2:     //write text index --> (<Mode>, <text>, <x>, <y>/n)
-        text = Serial.readStringUntil(',');
+        text = Serial.readStringUntil(':');
+        Serial.println(text);
         //text_length = text.length();
         cursor_x = Serial.parseInt();
         cursor_y = Serial.parseInt();
@@ -73,9 +75,9 @@ void loop() {
         drawsingleGraph();
         break;
       case 8: // Print Siemens Logo
-        matrix.Color(000, 210, 180);
         matrix.setFont(&ufonts_com_siemens_logo8pt7b);
-        matrix.setCursor(10,20);
+        matrix.setTextColor(matrix.Color(210,000,180));
+        matrix.setCursor(0,20);
         matrix.print("s");
         matrix.show();
         matrix.setFont();
