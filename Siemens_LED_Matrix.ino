@@ -15,7 +15,8 @@
 #define HEIGTH_ORANGE (HIGHT_MATRIX * 0.5)
 #define HEIGHT_RED    (HIGHT_MATRIX * 0.75)
 
-int mode = 0; //0=default, 1=graph, to be extended
+int mode, text_length, cursor_x, cursor_y = 0; //0=default, 1=graph, to be extended
+String text = "";
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_BOTTOM + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
 
@@ -40,11 +41,17 @@ void loop() {
       case 1:     //1, 30, 60, 80, ... (Mode:1, row0:30%, row1:60%, row3:80%, .....)
         displayGraphs(false);  
         break;
-      case 2:     //test_fill
-        matrix.setCursor(0,10);
+      case 2:     //write text index --> (<Mode>, <text>, <x>, <y>/n)
+        text = Serial.readStringUntil(',');
+        //text_length = text.length();
+        cursor_x = Serial.parseInt();
+        cursor_y = Serial.parseInt();
+        matrix.fillRect(cursor_x, cursor_y, WIDTH_MATRIX, 0, matrix.Color(0,0,0));
+        //Make sure, that nothing else is displayed on the 
+        matrix.setCursor(cursor_x, cursor_y);
         matrix.setTextColor(colors[2]);
         matrix.setTextSize(1);
-        matrix.print("Siemens");
+        matrix.print(text);
         //matrix.show(); //--> USE MODE 6
         break;
       case 3:
@@ -65,7 +72,7 @@ void loop() {
       case 7:
         drawsingleGraph();
         break;
-      case 8:
+      case 8: // Print Siemens Logo
         matrix.setFont(&ufonts_com_siemens_logo9pt7b);
         matrix.setCursor(20,10);
         matrix.print("s");
