@@ -42,9 +42,8 @@ void loop() {
       case 1:     //1, 30, 60, 80, ... (Mode:1, row0:30%, row1:60%, row3:80%, .....)
         displayGraphs(false);  
         break;
-      case 2:     //write text index --> (<Mode>, <text>, <x>, <y>/n)
+      case 2:     //write text index --> (<Mode><text>: <x>, <y>/n)
         text = Serial.readStringUntil(':');
-        Serial.println(text);
         //text_length = text.length();
         cursor_x = Serial.parseInt();
         cursor_y = Serial.parseInt();
@@ -75,7 +74,7 @@ void loop() {
         drawsingleGraph();
         break;
       case 8: // Print Siemens Logo
-        matrix.setFont(&ufonts_com_siemens_logo8pt7b);
+        matrix.setFont(&ufonts_com_siemens_logo6pt7b);
         matrix.setTextColor(matrix.Color(210,000,180));
         matrix.setCursor(0,20);
         matrix.print("s");
