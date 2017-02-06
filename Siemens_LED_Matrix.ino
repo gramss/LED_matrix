@@ -73,8 +73,9 @@ void loop() {
         drawsingleGraph();
         break;
       case 8: // Print Siemens Logo
-        matrix.setFont(&ufonts_com_siemens_logo9pt7b);
-        matrix.setCursor(20,10);
+        matrix.Color(000, 210, 180);
+        matrix.setFont(&ufonts_com_siemens_logo8pt7b);
+        matrix.setCursor(10,20);
         matrix.print("s");
         matrix.show();
         matrix.setFont();
