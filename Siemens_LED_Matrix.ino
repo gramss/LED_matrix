@@ -9,8 +9,8 @@
 
 #define DATA_PIN 6
 
-#define WIDTH_MATRIX 59  
-#define HIGHT_MATRIX 30 
+#define WIDTH_MATRIX 59  // Breite der Matrix in Pixel
+#define HIGHT_MATRIX 30  // Höhe der Matrix in Pixel
 #define DISPLAYED_GRAPHS 30
 #define STEP_GRAPS (WIDTH_MATRIX/DISPLAYED_GRAPHS)
 #define HEIGTH_ORANGE (HIGHT_MATRIX * 0.5)
@@ -19,18 +19,20 @@
 int mode, text_length, cursor_x, cursor_y = 0; //0=default, 1=graph, to be extended
 String text = "";
 
+/*Erstelle eine Matrix nach unseren Vorgaben*/
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(WIDTH_MATRIX, HIGHT_MATRIX, DATA_PIN, NEO_MATRIX_BOTTOM + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_RGB + NEO_KHZ800);
 
+/*Legt die drei Grundfarben fest; Gruen,Rot,Blau*/
 const uint16_t colors[] = {
   matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
 
 void setup() {
   // initialize serial:
-  Serial.begin(115200);
+  Serial.begin(115200); //Ininitialisieren der Serielenschnittstelle; Wert muss mit visual_init() übereinstimmen!!!
 
   matrix.begin();
   matrix.setTextWrap(false);
-  matrix.setBrightness(30);
+  matrix.setBrightness(30); //Helligkeit der LEDs (30%); nicht voll auslasten, Gefahr der Zerstörung zu groß!!
   matrix.setTextColor(colors[0]);
 
 }
@@ -40,7 +42,7 @@ void loop() {
     mode = Serial.parseInt();
     switch (mode){
       case 1:     //1, 30, 60, 80, ... (Mode:1, row0:30%, row1:60%, row3:80%, .....)
-        displayGraphs(false);  
+        displayGraphs(false);  // kann mehere Graphen aktualisieren
         break;
       case 2:     //write text index --> (<Mode><text>: <x>, <y>/n)
         text = Serial.readStringUntil(':');
@@ -48,7 +50,7 @@ void loop() {
         cursor_x = Serial.parseInt();
         cursor_y = Serial.parseInt();
         matrix.fillRect(cursor_x, cursor_y, WIDTH_MATRIX, 0, matrix.Color(0,0,0));
-        //Make sure, that nothing else is displayed on the 
+        //Make sure, that nothing else is displayed on the Matrix
         matrix.setCursor(cursor_x, cursor_y);
         matrix.setTextColor(colors[2]);
         matrix.setTextSize(1);
@@ -59,24 +61,25 @@ void loop() {
         matrix.drawLine(0,0,58,29, colors[0]);
         //matrix.show(); //--> USE MODE 6
         break;
-      case 4:
+      case 4: //befüllt ein Rechteck mit der Farbe Gruen
         matrix.fillRect(Serial.parseInt(), Serial.parseInt(), Serial.parseInt(),Serial.parseInt(), colors[0]);
         //matrix.show(); //--> USE MODE 6
         break;
-      case 5:
+      case 5: // löscht die Matrix
         matrix.clear();
         matrix.show();
         break;
-      case 6:         //NEEDS to be exicuted after using all the other modes
+      case 6: //NEEDS to be exicuted after using all the other modes
       matrix.show();
         break;
-      case 7:
+      case 7: //Darstellung/Aktualisierung eines Graphen
         drawsingleGraph();
         break;
       case 8: // Print Siemens Logo
+      Serial.println("case1");
         matrix.setFont(&ufonts_com_siemens_logo6pt7b);
         matrix.setTextColor(matrix.Color(210,000,180));
-        matrix.setCursor(0,20);
+        matrix.setCursor(2,18);
         matrix.print("s");
         matrix.show();
         matrix.setFont();
