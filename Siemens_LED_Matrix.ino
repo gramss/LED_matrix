@@ -44,15 +44,14 @@ void loop() {
       case 1:     //1, 30, 60, 80, ... (Mode:1, row0:30%, row1:60%, row3:80%, .....)
         displayGraphs(false);  // kann mehere Graphen aktualisieren
         break;
-      case 2:     //write text index --> (<Mode><text>: <x>, <y>/n)
+      case 2:     //write text index --> (<Mode><text>: <x>, <y>,farbe/n)
         text = Serial.readStringUntil(':');
         //text_length = text.length();
         cursor_x = Serial.parseInt();
         cursor_y = Serial.parseInt();
-        matrix.fillRect(cursor_x, cursor_y, WIDTH_MATRIX, 0, matrix.Color(0,0,0));
-        //Make sure, that nothing else is displayed on the Matrix
+        matrix.fillRect(cursor_x, cursor_y, WIDTH_MATRIX, 0, matrix.Color(0,0,0));  //Make sure, that nothing else is displayed on the Matrix
         matrix.setCursor(cursor_x, cursor_y);
-        matrix.setTextColor(colors[2]);
+        matrix.setTextColor(matrix.Color(Serial.parseInt(), Serial.parseInt(), Serial.parseInt() ));
         matrix.setTextSize(1);
         matrix.print(text);
         //matrix.show(); //--> USE MODE 6
@@ -71,6 +70,7 @@ void loop() {
         break;
       case 6: //NEEDS to be exicuted after using all the other modes
       matrix.show();
+      delay(1); //sonst wird die Folgefunktion nicht ausgeführt.. Arduino ist beschäftigt
         break;
       case 7: //Darstellung/Aktualisierung eines Graphen
         drawsingleGraph();
